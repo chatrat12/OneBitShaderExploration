@@ -59,18 +59,18 @@
 			float GetGrayscale(float3 color)
 			{
 				const static float oneOverThree = 1.0 / 3.0;
-				return color.r + color.g + color.b * oneOverThree;
+				return (color.r + color.g + color.b) * oneOverThree;
 			}
 
 			fixed4 frag (v2f i) : SV_Target
 			{
 				float2 screenCoords = GetScreenCoords(i.uv);
 
-				float gray = GetGrayscale(tex2D(_MainTex, i.uv)) * 0.2;
+				float gray = GetGrayscale(tex2D(_MainTex, i.uv));
 				float spacing = floor(gray * 8);
 				float dither = GetDither(spacing, screenCoords);
 
-				float3 color = dither; //gray > 0.1 ? dither : 0;
+				float3 color = dither;
 				
 				return float4(color, 1);
 			}
